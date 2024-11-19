@@ -25,8 +25,8 @@ defmodule BananaBank.Users.User do
 
   def changeset(user, params) do
     user
-    |> cast(params, @requerid_params_create)
-    |> do_validations(@requerid_params_update)
+    |> cast(params, @requerid_params_update)
+    |> do_validations(@requerid_params_create)
     |> add_password_hash()
   end
 
@@ -35,6 +35,7 @@ defmodule BananaBank.Users.User do
     |> validate_required(fields)
     |> validate_length(:name, min: 3)
     |> validate_length(:cep, is: 8)
+    |> validate_length(:password, min: 6)
   end
 
   def add_password_hash(

@@ -36,4 +36,10 @@ defmodule BananaBankWeb.ErrorJSON do
       message: "User not found"
     }
   end
+
+  def error(%{status: status}) do
+    %{
+      status: status
+    }
+  end
 end
