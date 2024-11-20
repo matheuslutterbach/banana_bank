@@ -6,33 +6,35 @@ defmodule BananaBankWeb.UsersControllerTest do
   alias BananaBank.Users
   alias BananaBank.Users.User
 
-  setup :verify_on_exit!
+  setup do
+    params = %{
+      "name" => "Matheus",
+      "email" => "matheus@email.com",
+      "cep" => "12345678",
+      "password" => "12345678"
+    }
+
+    viaCepBody = %{
+      "bairro" => "",
+      "cep" => "28640-000",
+      "complemento" => "",
+      "ddd" => "22",
+      "estado" => "Rio de Janeiro",
+      "gia" => "",
+      "ibge" => "3301207",
+      "localidade" => "Carmo",
+      "logradouro" => "",
+      "regiao" => "Sudeste",
+      "siafi" => "5823",
+      "uf" => "RJ",
+      "unidade" => ""
+    }
+
+    {:ok, %{user_params: params, viaCepBody: viaCepBody}}
+  end
 
   describe "create/2" do
-    test "successfully creates an user", %{conn: conn} do
-      params = %{
-        "name" => "Matheus",
-        "email" => "matheus@email.com",
-        "cep" => "12345678",
-        "password" => "12345678"
-      }
-
-      body = %{
-        "bairro" => "",
-        "cep" => "28640-000",
-        "complemento" => "",
-        "ddd" => "22",
-        "estado" => "Rio de Janeiro",
-        "gia" => "",
-        "ibge" => "3301207",
-        "localidade" => "Carmo",
-        "logradouro" => "",
-        "regiao" => "Sudeste",
-        "siafi" => "5823",
-        "uf" => "RJ",
-        "unidade" => ""
-      }
-
+    test "successfully creates an user", %{conn: conn, user_params: params, viaCepBody: body} do
       expect(BananaBank.ViaCep.ClientMock, :call, fn "12345678" ->
         {:ok, body}
       end)
@@ -70,30 +72,7 @@ defmodule BananaBankWeb.UsersControllerTest do
   end
 
   describe "delete/2" do
-    test "successfully deletes an user", %{conn: conn} do
-      params = %{
-        "name" => "Matheus",
-        "email" => "matheus@email.com",
-        "cep" => "12345678",
-        "password" => "12345678"
-      }
-
-      body = %{
-        "bairro" => "",
-        "cep" => "28640-000",
-        "complemento" => "",
-        "ddd" => "22",
-        "estado" => "Rio de Janeiro",
-        "gia" => "",
-        "ibge" => "3301207",
-        "localidade" => "Carmo",
-        "logradouro" => "",
-        "regiao" => "Sudeste",
-        "siafi" => "5823",
-        "uf" => "RJ",
-        "unidade" => ""
-      }
-
+    test "successfully deletes an user", %{conn: conn, user_params: params, viaCepBody: body} do
       expect(BananaBank.ViaCep.ClientMock, :call, fn "12345678" ->
         {:ok, body}
       end)
