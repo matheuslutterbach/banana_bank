@@ -1,8 +1,12 @@
 defmodule BananaBankWeb.UsersControllerTest do
   use BananaBankWeb.ConnCase
 
+  import Mox
+
   alias BananaBank.Users
   alias BananaBank.Users.User
+
+  setup :verify_on_exit!
 
   describe "create/2" do
     test "successfully creates an user", %{conn: conn} do
@@ -12,6 +16,26 @@ defmodule BananaBankWeb.UsersControllerTest do
         "cep" => "12345678",
         "password" => "12345678"
       }
+
+      body = %{
+        "bairro" => "",
+        "cep" => "28640-000",
+        "complemento" => "",
+        "ddd" => "22",
+        "estado" => "Rio de Janeiro",
+        "gia" => "",
+        "ibge" => "3301207",
+        "localidade" => "Carmo",
+        "logradouro" => "",
+        "regiao" => "Sudeste",
+        "siafi" => "5823",
+        "uf" => "RJ",
+        "unidade" => ""
+      }
+
+      expect(BananaBank.ViaCep.ClientMock, :call, fn "12345678" ->
+        {:ok, body}
+      end)
 
       reponse =
         conn
@@ -26,11 +50,15 @@ defmodule BananaBankWeb.UsersControllerTest do
 
     test "when there are invalid params, returns an error", %{conn: conn} do
       params = %{
-        name: nil,
-        email: "matheus@email.com",
-        cep: "12",
-        password: "123456"
+        "name" => nil,
+        "email" => "matheus@email.com",
+        "cep" => "12",
+        "password" => "12345678"
       }
+
+      expect(BananaBank.ViaCep.ClientMock, :call, fn "12" ->
+        {:ok, ""}
+      end)
 
       reponse =
         conn
@@ -44,11 +72,31 @@ defmodule BananaBankWeb.UsersControllerTest do
   describe "delete/2" do
     test "successfully deletes an user", %{conn: conn} do
       params = %{
-        name: "Matheus",
-        email: "matheus@email.com",
-        cep: "12345678",
-        password: "12345678"
+        "name" => "Matheus",
+        "email" => "matheus@email.com",
+        "cep" => "12345678",
+        "password" => "12345678"
       }
+
+      body = %{
+        "bairro" => "",
+        "cep" => "28640-000",
+        "complemento" => "",
+        "ddd" => "22",
+        "estado" => "Rio de Janeiro",
+        "gia" => "",
+        "ibge" => "3301207",
+        "localidade" => "Carmo",
+        "logradouro" => "",
+        "regiao" => "Sudeste",
+        "siafi" => "5823",
+        "uf" => "RJ",
+        "unidade" => ""
+      }
+
+      expect(BananaBank.ViaCep.ClientMock, :call, fn "12345678" ->
+        {:ok, body}
+      end)
 
       {:ok, %User{id: id}} =
         Users.create(params)

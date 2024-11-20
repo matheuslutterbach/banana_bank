@@ -10,7 +10,7 @@ defmodule BananaBankWeb.UsersController do
     with {:ok, %User{} = user} <- Users.create(params) do
       conn
       |> put_status(:created)
-      |> render(:create, user: user)
+      |> render(:created, user: user)
     end
   end
 
