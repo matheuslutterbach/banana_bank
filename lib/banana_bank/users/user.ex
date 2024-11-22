@@ -2,6 +2,7 @@ defmodule BananaBank.Users.User do
   use Ecto.Schema
   import Ecto.Changeset
   alias Ecto.Changeset
+  alias BananaBank.Accounts.Account
 
   @requerid_params_create [:name, :password, :email, :cep]
   @requerid_params_update [:name, :email, :cep]
@@ -12,6 +13,7 @@ defmodule BananaBank.Users.User do
     field :password_hash, :string
     field :email, :string
     field :cep, :string
+    has_one :account, Account
 
     timestamps()
   end
@@ -42,7 +44,7 @@ defmodule BananaBank.Users.User do
         %Changeset{valid?: true, changes: %{password: password}} =
           changeset
       ) do
-    change(changeset, Argon2.add_hash(password))
+    change(changeset, password_hash: Argon2.hash_pwd_salt(password))
   end
 
   def add_password_hash(changeset), do: changeset

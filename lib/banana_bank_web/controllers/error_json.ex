@@ -42,4 +42,10 @@ defmodule BananaBankWeb.ErrorJSON do
       status: status
     }
   end
+
+  def error(%{message: message}) do
+    %{
+      message: message
+    }
+  end
 end
