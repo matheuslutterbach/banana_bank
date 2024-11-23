@@ -24,6 +24,13 @@ defmodule BananaBankWeb.UsersJSON do
     }
   end
 
+  def login(%{token: token}) do
+    %{
+      message: "User autenticado com sucesso",
+      bearer: token
+    }
+  end
+
   defp data(%User{} = user) do
     %{
       id: user.id,
